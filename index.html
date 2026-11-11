@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>TK Report</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F0F1F6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="TK Report">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+:root{--bg:#F0F1F6;--tx:#1E2430;--ac:#B50000;--bt:#232A38;--line:rgba(30,36,48,.16);--edge:rgba(30,36,48,.18);--mut:rgba(30,36,48,.62)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:calc(10px + env(safe-area-inset-top)) calc(10px + env(safe-area-inset-right)) calc(28px + env(safe-area-inset-bottom)) calc(10px + env(safe-area-inset-left))}
+#app{max-width:560px;margin:0 auto}
+button{font:inherit;color:inherit}
+.bar{display:flex;align-items:center;background:var(--bt);border-radius:8px;padding:6px}
+.bi{flex:1;display:flex;justify-content:center}
+.ib{width:52px;height:48px;border:0;border-radius:8px;background:none;color:#fff;display:flex;align-items:center;justify-content:center}
+.ib.hot{background:var(--ac)}
+.ib svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.info{display:flex;background:#fff;border:1px solid var(--edge);border-radius:10px;padding:4px 6px;margin-top:10px}
+.half{flex:1;min-width:0}
+.dv{width:1px;background:rgba(30,36,48,.2);margin:2px 6px}
+.il{display:flex;padding:3px 0;border-top:1px solid rgba(30,36,48,.12)}
+.il:first-child{border-top:0}
+.ic{flex:1;min-width:0;text-align:center}
+.ic .l{font-size:10px;color:var(--mut);line-height:1.25}
+.ic .v{font-size:15px;font-weight:700;line-height:1.3}
+.fit{white-space:nowrap;overflow:hidden}
+.card{background:#fff;border:1px solid var(--edge);border-radius:12px;overflow:hidden;margin-top:10px;scroll-margin-top:calc(8px + env(safe-area-inset-top))}
+.ch{display:flex;align-items:center;background:#E3E4E9;padding:7px 14px;font-weight:700;font-size:14px;cursor:pointer;user-select:none}
+.ch .t{flex:1}
+.ch .s{font-size:20px;line-height:1}
+.cb{padding:2px 12px 4px}
+.cb[hidden]{display:none}
+.row{border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.line{display:flex;align-items:center;padding:6px 0}
+.lab{flex:0 0 38%;text-align:center;color:var(--ac);font-weight:700;font-size:14px;padding-right:6px}
+.rt{flex:1;min-width:0}
+.mrow{display:flex;gap:8px;padding:6px 0}
+.mc{display:flex;flex-direction:column;min-width:0}
+.mh{display:flex;align-items:center;justify-content:center;text-align:center;color:var(--ac);font-weight:700;font-size:13px;padding:0 2px 2px}
+.in{display:block;width:100%;border:0;border-bottom:1px solid rgba(30,36,48,.55);border-radius:0;background:transparent;text-align:center;font:inherit;font-size:16px;min-height:44px;padding:8px 6px;color:var(--tx);outline:none}
+.in:focus{border-bottom-color:var(--ac)}
+.tb{display:block;width:100%;min-height:48px;background:#fff;border:1px solid #000;border-radius:10px;font-size:16px;color:#000;padding:0 4px}
+.tb:active{background:#eee}
+.rg{display:flex;gap:6px}
+.tot{font-size:18px;font-weight:700;color:var(--ac);text-align:center;min-height:44px;line-height:44px}
+.dly .cols{display:flex;padding-top:6px}
+.dc{flex:1;min-width:0;text-align:center;padding:0 2px}
+.dc .h{font-size:12px;font-weight:700;color:var(--mut);min-height:2.4em;display:flex;align-items:center;justify-content:center;line-height:1.2}
+.dc .v{font-size:18px;font-weight:700;color:var(--ac)}
+.rd{text-align:center;font-size:13px;color:rgba(30,36,48,.75);padding:4px 0 6px}
+textarea.nt{display:block;width:100%;min-height:130px;border:0;border-bottom:1px solid rgba(30,36,48,.55);background:transparent;font:inherit;font-size:16px;color:var(--tx);padding:8px 4px;resize:vertical;outline:none;border-radius:0}
+.ver{text-align:center;font-size:11px;color:var(--mut);margin-top:16px}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:10;padding:16px}
+.dlg{background:#fafafa;border-radius:24px;padding:20px 20px 14px;width:min(88vw,340px)}
+.dlg h2{margin:0 0 4px;font-size:18px;font-weight:700}
+.dlg p{margin:6px 0 4px;font-size:15px}
+.wh{display:flex;justify-content:center;align-items:center;gap:6px;position:relative;height:160px;margin:10px 0}
+.wc{height:160px;width:90px;overflow-y:scroll;scroll-snap-type:y mandatory;padding:60px 0;scrollbar-width:none;-webkit-overflow-scrolling:touch;text-align:center;overscroll-behavior:contain}
+.wc::-webkit-scrollbar{display:none}
+.wc div{height:40px;line-height:40px;font-size:24px;scroll-snap-align:center}
+.wcol{font-size:30px;font-weight:700}
+.band{position:absolute;left:18%;right:18%;top:60px;height:40px;border-top:1px solid #aaa;border-bottom:1px solid #aaa;pointer-events:none}
+.db{display:flex;gap:4px;margin-top:6px}
+.db button{flex:1;min-height:44px;border:0;background:none;font-size:16px;font-weight:700;border-radius:10px}
+.db button:active{background:#e6e6e6}
+.db .sp{flex:1.2}
+.toast{position:fixed;left:50%;bottom:calc(28px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--bt);color:#fff;padding:10px 16px;border-radius:20px;font-size:14px;z-index:20;max-width:90vw;text-align:center}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const LAYOUT = {"sections":[{"id":"1792873405622","name":"Pax"},{"id":"1793444926874","name":"ARR / DEP"},{"id":"1792873902080","name":"Above wing"},{"id":"1792874689945","name":"Below Wing"}],"fields":[{"id":"1792873413137","label":"C","type":"number","cell":"G10","cell2":"","sec":"1792873405622","same":false,"terms":"","value":"","ctype":"number","hide":false},{"id":"1792873447273","label":"Y","type":"number","cell":"H10","cell2":"","sec":"1792873405622","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1792873470942","label":"I","type":"number","cell":"I10","cell2":"","sec":"1792873405622","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1794357477294","label":"TOB","type":"total","cell":"","cell2":"","sec":"1792873405622","same":false,"terms":"1792873413137:1;1792873447273:1;1792873470942:1","value":"","ctype":"number","hide":true},{"id":"1793443921135","label":"WCHR","type":"number","cell":"L153","cell2":"","sec":"1792873405622","same":false,"terms":"","value":"","ctype":"number","hide":false},{"id":"1793443949336","label":"WCHS","type":"number","cell":"M153","cell2":"","sec":"1792873405622","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1793443960361","label":"WCHC","type":"number","cell":"N153","cell2":"","sec":"1792873405622","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1793460544628","label":"MAAS","type":"text","cell":"O153","cell2":"","sec":"1792873405622","same":false,"terms":"","value":"","ctype":"number","hide":false},{"id":"1793443988932","label":"UMNR","type":"number","cell":"P153","cell2":"","sec":"1792873405622","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1793460569291","label":"YP","type":"text","cell":"Q153","cell2":"","sec":"1792873405622","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1793460592616","label":"INAD/DEPU","type":"text","cell":"R153","cell2":"","sec":"1792873405622","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1794352529267","label":"STD","type":"time","cell":"","cell2":"","sec":"1793444926874","same":false,"terms":"","value":"","ctype":"number","hide":false},{"id":"1794352550201","label":"Turn Time","type":"number","cell":"","cell2":"","sec":"1793444926874","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1793445212777","label":"Gate","type":"text","cell":"L10","cell2":"","sec":"1793444926874","same":false,"terms":"","value":"","ctype":"number","hide":false},{"id":"1793444965817","label":"Landing","type":"time","cell":"H14","cell2":"","sec":"1793444926874","same":false,"terms":"","value":"","ctype":"number","hide":false},{"id":"1793444977913","label":"On Blocks","type":"time","cell":"I14","cell2":"","sec":"1793444926874","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1793444988625","label":"Off Blocks","type":"time","cell":"D17","cell2":"","sec":"1793444926874","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1793445000865","label":"Takeoff","type":"time","cell":"E17","cell2":"","sec":"1793444926874","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1792873630683","label":"Cabin","type":"range","cell":"I35","cell2":"J35","sec":"1793444926874","same":false,"terms":"","value":"","ctype":"number","hide":false},{"id":"1792873656018","label":"Cargo","type":"range","cell":"K35","cell2":"L35","sec":"1793444926874","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1793445011062","label":"Delay 1","type":"text","cell":"J17","cell2":"","sec":"1793444926874","same":false,"terms":"","value":"","ctype":"number","hide":false},{"id":"1793445024042","label":"Duration","type":"duration","cell":"K17","cell2":"","sec":"1793444926874","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1793445076047","label":"Delay 2","type":"text","cell":"L17","cell2":"","sec":"1793444926874","same":false,"terms":"","value":"","ctype":"number","hide":false},{"id":"1793445085864","label":"Duration","type":"duration","cell":"M17","cell2":"","sec":"1793444926874","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1793445107105","label":"Delay 3","type":"text","cell":"N17","cell2":"","sec":"1793444926874","same":false,"terms":"","value":"","ctype":"number","hide":false},{"id":"1793445118868","label":"Duration","type":"duration","cell":"O17","cell2":"","sec":"1793444926874","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1793445134528","label":"Delay 4","type":"text","cell":"P17","cell2":"","sec":"1793444926874","same":false,"terms":"","value":"","ctype":"number","hide":false},{"id":"1793445153302","label":"Duration","type":"duration","cell":"Q17","cell2":"","sec":"1793444926874","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1794352587863","label":"","type":"delay","cell":"","cell2":"","sec":"1793444926874","same":false,"terms":"1794352529267.a|1793444977913.a|1794352550201|1792873630683.b|1792873656018.b|1793444988625.a|1793445024042;1793445085864;1793445118868;1793445153302","value":"Late Arrival|Turnaround|After Doors|Remaining Delay","ctype":"number","hide":false},{"id":"1792873950287","label":"Deboarding","type":"range","cell":"B38","cell2":"B40","sec":"1792873902080","same":false,"terms":"","value":"","ctype":"number","hide":false},{"id":"1792874009044","label":"Cleaning","type":"range","cell":"D29","cell2":"F29","sec":"1792873902080","same":false,"terms":"","value":"","ctype":"number","hide":false},{"id":"1792874043563","label":"Staff","type":"number","cell":"B29","cell2":"","sec":"1792873902080","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1792874119563","label":"Vacs","type":"number","cell":"H29","cell2":"","sec":"1792873902080","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1792874574127","label":"Security","type":"range","cell":"F38","cell2":"F40","sec":"1792873902080","same":false,"terms":"","value":"","ctype":"number","hide":false},{"id":"1792874186444","label":"Preboard","type":"time","cell":"H38","cell2":"","sec":"1792873902080","same":false,"terms":"","value":"","ctype":"number","hide":false},{"id":"1792874201589","label":"Release","type":"time","cell":"H39","cell2":"","sec":"1792873902080","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1792874216726","label":"Last Scan","type":"time","cell":"H40","cell2":"","sec":"1792873902080","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1792874229448","label":"All On","type":"time","cell":"H41","cell2":"","sec":"1792873902080","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1792874371996","label":"TL","type":"text","cell":"L26","cell2":"","sec":"1792873902080","same":false,"terms":"","value":"","ctype":"number","hide":false},{"id":"1792874306724","label":"Control","type":"text","cell":"M26","cell2":"","sec":"1792873902080","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1792874340701","label":"Scan","type":"text","cell":"N26","cell2":"","sec":"1792873902080","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1792874324421","label":"Scan","type":"text","cell":"O26","cell2":"","sec":"1792873902080","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1792874428409","label":"Queue","type":"text","cell":"P26","cell2":"","sec":"1792873902080","same":false,"terms":"","value":"","ctype":"number","hide":false},{"id":"1792874450036","label":"Steps","type":"text","cell":"P27","cell2":"","sec":"1792873902080","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1792874464230","label":"Meeting","type":"text","cell":"Q26","cell2":"","sec":"1792873902080","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1792874503471","label":"Meeting","type":"text","cell":"Q27","cell2":"","sec":"1792873902080","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1793450271014","label":".B/IT C","type":"number","cell":"I23","cell2":"","sec":"1792873902080","same":false,"terms":"","value":"","ctype":"number","hide":false},{"id":"1793450314895","label":".B/IT Y","type":"number","cell":"I24","cell2":"","sec":"1792873902080","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1793450329026","label":"FQTV TK","type":"number","cell":"N20","cell2":"","sec":"1792873902080","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1793450344666","label":"FQTV SA","type":"number","cell":"N22","cell2":"","sec":"1792873902080","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1793453670616","label":"Dispatcher","type":"text","cell":"A34","cell2":"","sec":"1792874689945","same":false,"terms":"","value":"","ctype":"number","hide":false},{"id":"1792874697009","label":"Fuel","type":"range","cell":"J38","cell2":"J40","sec":"1792874689945","same":false,"terms":"","value":"","ctype":"number","hide":false},{"id":"1792874734758","label":"TL","type":"text","cell":"B34","cell2":"","sec":"1792874689945","same":false,"terms":"","value":"","ctype":"number","hide":false},{"id":"1792874745279","label":"Staff","type":"number","cell":"C34","cell2":"","sec":"1792874689945","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1792874846521","label":"Hi Lo","type":"number","cell":"D34","cell2":"","sec":"1792874689945","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1792874876198","label":"Belts","type":"number","cell":"E34","cell2":"","sec":"1792874689945","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1792874888841","label":"Steps","type":"number","cell":"F34","cell2":"","sec":"1792874689945","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1794088060218","label":"Unloading","type":"range","cell":"","cell2":"","sec":"1792874689945","same":false,"terms":"","value":"","ctype":"number","hide":false},{"id":"1794088083081","label":"Loading","type":"range","cell":"","cell2":"","sec":"1792874689945","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1792874959614","label":"Inbound Times","type":"range","cell":"R38","cell2":"R40","sec":"1792874689945","same":false,"terms":"","value":"","ctype":"number","hide":false},{"id":"1793445463856","label":"C","type":"number","cell":"B44","cell2":"","sec":"1792874689945","same":false,"terms":"","value":"","ctype":"number","hide":false},{"id":"1793445478677","label":"Y","type":"number","cell":"D44","cell2":"","sec":"1792874689945","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1792874971476","label":"Missing","type":"number","cell":"H44","cell2":"","sec":"1792874689945","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1792874986749","label":"Rush","type":"number","cell":"F44","cell2":"","sec":"1792874689945","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1794082717925","label":"Bags","type":"total","cell":"","cell2":"","sec":"1792874689945","same":true,"terms":"1793445463856:1;1793445478677:1;1792874971476:-1;1792874986749:1","value":"","ctype":"number","hide":false},{"id":"1793469954157","label":".DAM","type":"number","cell":"N44","cell2":"","sec":"1792874689945","same":true,"terms":"","value":"","ctype":"number","hide":false},{"id":"1794086579460","label":"Cleaning Mops","type":"const","cell":"J29","cell2":"","sec":"","same":false,"terms":"","value":"2","ctype":"number","hide":false},{"id":"1794086624897","label":"Cleaning Pillows","type":"const","cell":"L29","cell2":"","sec":"","same":false,"terms":"","value":"No","ctype":"text","hide":false},{"id":"1794086649556","label":"Loading Dollies","type":"const","cell":"G34","cell2":"","sec":"","same":false,"terms":"","value":"Enough","ctype":"text","hide":false},{"id":"1794086664502","label":"Loading Tug","type":"const","cell":"H34","cell2":"","sec":"","same":false,"terms":"","value":"1","ctype":"number","hide":false}],"info":[{"src":"1792873413137","showSec":false,"showField":true,"side":0,"same":false},{"src":"1792873447273","showSec":false,"showField":true,"side":0,"same":true},{"src":"1792873470942","showSec":false,"showField":true,"side":0,"same":true},{"src":"1794357477294","showSec":false,"showField":true,"side":0,"same":false},{"src":"1793443921135","showSec":false,"showField":true,"side":0,"same":false},{"src":"1793443949336","showSec":false,"showField":true,"side":0,"same":true},{"src":"1793443960361","showSec":false,"showField":true,"side":0,"same":true},{"src":"1793444977913","showSec":false,"showField":true,"side":1,"same":false},{"src":"1794352587863#ready","showSec":false,"showField":true,"side":1,"same":false},{"src":"1794352587863#count","showSec":false,"showField":true,"side":1,"same":false}]};
+const APP_VERSION = "1.18";
+const FILE_NAME = "TK Report";
+const SHEET_NAME = "Sheet1";
+
+const fields = LAYOUT.fields, sections = LAYOUT.sections, infos = LAYOUT.info;
+let vals = {}, notes = "", openSec = "";
+try {
+  vals = JSON.parse(localStorage.getItem("tkr_vals") || "{}");
+  notes = localStorage.getItem("tkr_notes") || "";
+  openSec = localStorage.getItem("tkr_open") || "";
+} catch (e) {}
+function save() {
+  try {
+    localStorage.setItem("tkr_vals", JSON.stringify(vals));
+    localStorage.setItem("tkr_notes", notes);
+    localStorage.setItem("tkr_open", openSec);
+  } catch (e) {}
+}
+
+const pad = n => String(n).padStart(2, "0");
+const byId = id => fields.find(f => f.id === id);
+const num = s => (s != null && String(s).trim() !== "" && !isNaN(Number(s))) ? Number(s) : null;
+function mins(s) {
+  if (!s) return null;
+  const p = String(s).split(":"); if (p.length !== 2) return null;
+  const h = parseInt(p[0], 10), m = parseInt(p[1], 10);
+  return (isNaN(h) || isNaN(m)) ? null : h * 60 + m;
+}
+const fmtMin = m => (m < 0 ? "-" : "") + pad(Math.floor(Math.abs(m) / 60)) + ":" + pad(Math.abs(m) % 60);
+const fmtNum = v => v == null ? "—" : String(Number(v.toFixed(2)));
+const A = f => vals[f.id + ".a"] || "";
+const B = f => vals[f.id + ".b"] || "";
+
+function valueOf(f) {
+  if (f.type === "number") return num(A(f));
+  if (f.type === "duration") return (mins(A(f) || "00:00") || 0) / 60;
+  if (f.type === "range") {
+    const s = mins(A(f)), e = mins(B(f));
+    if (s != null && e != null) { let d = (e - s) / 60; if (d < 0) d += 24; return d; }
+  }
+  return null;
+}
+function parseTerms(s) {
+  const out = {};
+  (s || "").split(";").forEach(t => { const p = t.split(":"); if (p.length === 2 && !isNaN(parseInt(p[1], 10))) out[p[0]] = parseInt(p[1], 10); });
+  return out;
+}
+function total(f) {
+  let sum = 0, any = false;
+  for (const [id, sign] of Object.entries(parseTerms(f.terms))) {
+    const src = byId(id); if (!src) continue;
+    const v = valueOf(src); if (v == null) continue;
+    sum += sign * v;
+    if (src.type !== "duration" || A(src) !== "") any = true;
+  }
+  return any ? sum : null;
+}
+const isTimeTotal = f => Object.keys(parseTerms(f.terms)).some(id => { const s = byId(id); return s && (s.type === "duration" || s.type === "range"); });
+function totalText(f) {
+  const v = total(f);
+  return (v != null && isTimeTotal(f)) ? fmtMin(Math.round(v * 60)) : fmtNum(v);
+}
+
+const DEF_HEADS = ["93", "GTP", "PDC", "Remaining"];
+function delayHeads(f) {
+  const p = (f.value || "").split("|");
+  return DEF_HEADS.map((d, i) => (p[i] && p[i].trim()) ? p[i].trim() : d);
+}
+function delayCalc(f) {
+  const p = (f.terms || "").split("|"), k = i => p[i] || "";
+  const mm = key => key ? mins(vals[key]) : null;
+  const std = mm(k(0)), on = mm(k(1));
+  const none = { d93: null, gtp: null, pdc: null, ready: null, rem: null };
+  if (std == null || on == null) return none;
+  const rel = t => (((t - std + 720) % 1440) + 1440) % 1440 - 720;
+  const turnRaw = parseFloat(vals[k(2) + ".a"]);
+  const turn = isNaN(turnRaw) ? 0 : Math.round(turnRaw);
+  const t1 = rel(on) + turn;
+  const d93 = t1 >= 0 ? t1 : null;
+  const l1 = Math.max(t1, 0);
+  const ends = [k(3), k(4)].map(mm).filter(x => x != null).map(rel);
+  const endRel = ends.length ? Math.max(...ends) : null;
+  const gtp = (endRel != null && endRel > l1) ? endRel - l1 : null;
+  const l2 = gtp != null ? endRel : l1;
+  const offM = mm(k(5));
+  const off = offM != null ? rel(offM) : null;
+  const pdc = (off != null && off >= 0 && off - l2 >= 0) ? off - l2 : null;
+  const used = (k(6) || "").split(";").filter(x => x).reduce((s, id) => s + (mins(vals[id + ".a"]) || 0), 0);
+  const rem = (off != null && off >= 0) ? off - used : null;
+  return { d93, gtp, pdc, ready: std + l1, rem };
+}
+const dm = m => m == null ? "—" : fmtMin(m);
+const span = m => m < 60 ? m + " min" : Math.floor(m / 60) + "h " + pad(m % 60) + "m";
+function countdownText(d) {
+  if (d.ready == null) return "—";
+  const n = new Date(), now = n.getHours() * 60 + n.getMinutes();
+  const left = (((d.ready - now + 720) % 1440) + 1440) % 1440 - 720;
+  return left > 0 ? "in " + span(left) : left === 0 ? "now" : span(-left) + " ago";
+}
+const readyClock = d => d.ready == null ? "—" : pad(Math.floor((d.ready % 1440) / 60)) + ":" + pad(d.ready % 60);
+
+function shown(f) {
+  const a = A(f), b = B(f);
+  switch (f.type) {
+    case "range": return (!a && !b) ? "—" : (a || "--:--") + " – " + (b || "--:--");
+    case "total": return totalText(f);
+    case "duration": return a || "00:00";
+    case "text": return a.trim().toUpperCase() || "—";
+    case "const": return f.value || "—";
+    default: return a || "—";
+  }
+}
+function infoLV(i) {
+  const id = i.src.split("#")[0], sub = i.src.indexOf("#") >= 0 ? i.src.split("#")[1] : "";
+  const f = byId(id); if (!f) return null;
+  if (!sub) return { f, head: f.label || "(untitled)", val: shown(f) };
+  if (f.type !== "delay") return null;
+  const d = delayCalc(f), h = delayHeads(f);
+  switch (sub) {
+    case "ready": return { f, head: "ETD", val: readyClock(d) };
+    case "count": return { f, head: "Countdown", val: countdownText(d) };
+    case "d93": return { f, head: h[0], val: dm(d.d93) };
+    case "gtp": return { f, head: h[1], val: dm(d.gtp) };
+    case "pdc": return { f, head: h[2], val: dm(d.pdc) };
+    case "rem": return { f, head: h[3], val: dm(d.rem) };
+  }
+  return null;
+}
+
+/* ---------------- UI ---------------- */
+const R = [];
+function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+function refreshAll() { R.forEach(f => f()); fitAll(); }
+function fit(e, max, min) { e.classList.add("fit"); e.dataset.max = max; e.dataset.min = min; return e; }
+function fitAll() {
+  document.querySelectorAll(".fit").forEach(e => {
+    if (!e.offsetParent) return;
+    let s = parseFloat(e.dataset.max); e.style.fontSize = s + "px";
+    const min = parseFloat(e.dataset.min);
+    while (e.scrollWidth > e.clientWidth + 0.5 && s > min) { s -= 0.5; e.style.fontSize = s + "px"; }
+  });
+  document.querySelectorAll(".mrow").forEach(r => {
+    if (!r.offsetParent) return;
+    const hs = [...r.querySelectorAll(".mh")];
+    hs.forEach(h => h.style.minHeight = "");
+    const m = Math.max(0, ...hs.map(h => h.offsetHeight));
+    hs.forEach(h => h.style.minHeight = m + "px");
+  });
+}
+function toast(msg) {
+  const t = el("div", "toast", msg); document.body.append(t);
+  setTimeout(() => t.remove(), 3200);
+}
+
+function timeBtn(f, key, hint, dur) {
+  const b = el("button", "tb"); b.type = "button";
+  const k = f.id + "." + key;
+  const r = () => { b.textContent = vals[k] || hint; };
+  r(); R.push(r);
+  b.onclick = () => openWheel(vals[k], dur,
+    v => { vals[k] = v; save(); refreshAll(); },
+    () => { delete vals[k]; save(); refreshAll(); });
+  return b;
+}
+function textIn(f, numeric) {
+  const i = el("input", "in"); i.type = "text";
+  i.value = A(f);
+  i.autocomplete = "off"; i.autocorrect = "off"; i.spellcheck = false;
+  if (numeric) i.inputMode = "decimal"; else i.setAttribute("autocapitalize", "words");
+  i.enterKeyHint = "done";
+  i.oninput = () => { vals[f.id + ".a"] = i.value; save(); refreshAll(); };
+  i.onkeydown = e => { if (e.key === "Enter") i.blur(); };
+  return i;
+}
+function delayView(f) {
+  const w = el("div", "dly"), cols = el("div", "cols");
+  const heads = delayHeads(f), vs = [];
+  heads.forEach(h => {
+    const c = el("div", "dc"); c.append(el("div", "h", h));
+    const v = fit(el("div", "v", "—"), 18, 11); vs.push(v); c.append(v); cols.append(c);
+  });
+  const rd = el("div", "rd"); w.append(cols, rd);
+  const r = () => {
+    const d = delayCalc(f);
+    vs[0].textContent = dm(d.d93); vs[1].textContent = dm(d.gtp); vs[2].textContent = dm(d.pdc); vs[3].textContent = dm(d.rem);
+    rd.textContent = d.ready == null ? "Ready: —" : "Ready " + readyClock(d) + "  ·  " + countdownText(d);
+  };
+  r(); R.push(r);
+  return w;
+}
+function input(f) {
+  switch (f.type) {
+    case "range": { const w = el("div", "rg"); w.append(timeBtn(f, "a", "Start", false), timeBtn(f, "b", "End", false)); return w; }
+    case "time": return timeBtn(f, "a", "--:--", false);
+    case "duration": return timeBtn(f, "a", "00:00", true);
+    case "number": return textIn(f, true);
+    case "total": { const d = el("div", "tot"); const r = () => { d.textContent = totalText(f); }; r(); R.push(r); return d; }
+    case "delay": return delayView(f);
+    default: return textIn(f, false);
+  }
+}
+function rowsOf(list) {
+  const out = [];
+  list.forEach(f => { if (f.same && out.length) out[out.length - 1].push(f); else out.push([f]); });
+  return out;
+}
+function buildRows(body, list) {
+  rowsOf(list).forEach(r => {
+    const row = el("div", "row");
+    if (r.length === 1) {
+      const f = r[0];
+      if (f.type === "delay") row.append(input(f));
+      else {
+        const ln = el("div", "line"); ln.append(el("div", "lab", f.label || "(untitled)"));
+        const rt = el("div", "rt"); rt.append(input(f)); ln.append(rt); row.append(ln);
+      }
+    } else {
+      const m = el("div", "mrow");
+      r.forEach(f => {
+        const c = el("div", "mc"); c.style.flex = f.type === "range" ? "2 1 0" : "1 1 0";
+        if (f.type !== "delay") {
+          const h = el("div", "mh", f.label || "(untitled)");
+          if (!/\s/.test(f.label || "")) fit(h, 13, 8);
+          c.append(h);
+        }
+        c.append(input(f)); m.append(c);
+      });
+      row.append(m);
+    }
+    body.append(row);
+  });
+}
+const cards = [];
+function makeCard(id, title, fill) {
+  const card = el("div", "card"), body = el("div", "cb"), sym = el("span", "s");
+  const hdr = el("div", "ch"); hdr.append(el("div", "t", title), sym);
+  fill(body);
+  const open = id === openSec;
+  body.hidden = !open; sym.textContent = open ? "–" : "+";
+  cards.push({ id, body, sym });
+  hdr.onclick = () => {
+    const now = body.hidden;
+    cards.forEach(c => { const o = now && c.id === id; c.body.hidden = !o; c.sym.textContent = o ? "–" : "+"; });
+    openSec = now ? id : ""; save(); fitAll();
+    if (now) card.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+  card.append(hdr, body);
+  return card;
+}
+function infoPanel() {
+  const panel = el("div", "info");
+  const valid = infos.filter(i => infoLV(i));
+  const halves = [valid.filter(i => i.side === 0), valid.filter(i => i.side !== 0)].filter(h => h.length);
+  halves.forEach((list, idx) => {
+    if (idx > 0) panel.append(el("div", "dv"));
+    const half = el("div", "half"); let cur = null;
+    list.forEach((i, n) => {
+      if (!cur || !i.same || n === 0) { cur = el("div", "il"); half.append(cur); }
+      const c = el("div", "ic"), l = fit(el("div", "l"), 10, 7), v = fit(el("div", "v"), 15, 9);
+      c.append(l, v); cur.append(c);
+      const r = () => {
+        const x = infoLV(i); if (!x) return;
+        const sec = (sections.find(s => s.id === x.f.sec) || {}).name || "";
+        const label = [i.showSec && sec ? sec : null, i.showField ? x.head : null].filter(Boolean).join(" · ");
+        l.textContent = label; l.style.display = label ? "" : "none"; v.textContent = x.val;
+      };
+      r(); R.push(r);
+    });
+    panel.append(half);
+  });
+  return panel;
+}
+const ICON_TRASH = '<svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg>';
+const ICON_SEND = '<svg viewBox="0 0 24 24"><path d="M21 3 10 14M21 3l-7 18-4-7-7-4 18-7z"/></svg>';
+function render() {
+  R.length = 0; cards.length = 0;
+  const app = document.getElementById("app"); app.textContent = "";
+  const bar = el("div", "bar");
+  [[ICON_TRASH, "Clear", false, clearAll], [ICON_SEND, "Send", true, send]].forEach(([svg, label, hot, fn]) => {
+    const w = el("div", "bi"), b = el("button", "ib" + (hot ? " hot" : ""));
+    b.type = "button"; b.innerHTML = svg; b.setAttribute("aria-label", label); b.onclick = fn; w.append(b); bar.append(w);
+  });
+  app.append(bar);
+  if (infos.length) app.append(infoPanel());
+  const ids = new Set(sections.map(s => s.id));
+  const vis = fields.filter(f => f.type !== "const" && !f.hide);
+  const loose = vis.filter(f => !ids.has(f.sec));
+  if (loose.length) { const c = el("div", "card"), b = el("div", "cb"); buildRows(b, loose); c.append(b); app.append(c); }
+  sections.forEach(s => {
+    const list = vis.filter(f => f.sec === s.id);
+    if (list.length) app.append(makeCard(s.id, s.name || "(unnamed)", b => buildRows(b, list)));
+  });
+  app.append(makeCard("notes", "Notes", b => {
+    const t = el("textarea", "nt"); t.value = notes; t.placeholder = "Type notes here (not sent to the spreadsheet)";
+    t.oninput = () => { notes = t.value; save(); };
+    b.append(t);
+  }));
+  app.append(el("div", "ver", "TK Report web " + APP_VERSION));
+  fitAll();
+}
+
+/* ---------------- dialogs ---------------- */
+function overlay(build) {
+  const ov = el("div", "ov"), d = el("div", "dlg");
+  ov.append(d);
+  ov.addEventListener("click", e => { if (e.target === ov) ov.remove(); });
+  build(d, () => ov.remove());
+  document.body.append(ov);
+  return ov;
+}
+function clearAll() {
+  overlay((d, close) => {
+    d.append(el("p", null, "Clear everything you've entered (including notes)?"));
+    const db = el("div", "db"), c = el("button", null, "Cancel"), ok = el("button", null, "Clear");
+    ok.style.color = "#B50000";
+    c.onclick = close; ok.onclick = () => { vals = {}; notes = ""; save(); close(); render(); };
+    db.append(el("div", "sp"), c, ok); d.append(db);
+  });
+}
+function openWheel(cur, dur, onSet, onClear) {
+  const now = new Date(), p = cur ? cur.split(":") : null;
+  const h0 = p ? (parseInt(p[0], 10) || 0) : (dur ? 0 : now.getHours());
+  const m0 = p ? (parseInt(p[1], 10) || 0) : (dur ? 0 : now.getMinutes());
+  const wheel = (max, v) => {
+    const w = el("div", "wc");
+    for (let i = 0; i <= max; i++) w.append(el("div", null, pad(i)));
+    w._v = Math.min(v, max); return w;
+  };
+  const hw = wheel(dur ? 99 : 23, h0), mw = wheel(59, m0);
+  const ov = overlay((d, close) => {
+    d.append(el("h2", null, dur ? "Set duration" : "Set time"));
+    const wh = el("div", "wh");
+    wh.append(hw, el("div", "wcol", ":"), mw, el("div", "band"));
+    d.append(wh);
+    const db = el("div", "db");
+    const cl = el("button", null, "Clear"), ca = el("button", null, "Cancel"), ok = el("button", null, "OK");
+    cl.onclick = () => { close(); onClear(); };
+    ca.onclick = close;
+    ok.onclick = () => {
+      const h = Math.max(0, Math.min(dur ? 99 : 23, Math.round(hw.scrollTop / 40)));
+      const m = Math.max(0, Math.min(59, Math.round(mw.scrollTop / 40)));
+      close(); onSet(pad(h) + ":" + pad(m));
+    };
+    db.append(cl, el("div", "sp"), ca, ok); d.append(db);
+  });
+  hw.scrollTop = hw._v * 40; mw.scrollTop = mw._v * 40;
+}
+
+/* ---------------- spreadsheet ---------------- */
+const REF = /^[A-Za-z]{1,3}[1-9][0-9]{0,6}$/;
+function colOf(ref) { let c = 0; for (const ch of ref.match(/^[A-Z]+/)[0]) c = c * 26 + (ch.charCodeAt(0) - 64); return c; }
+const rowOf = ref => parseInt(ref.replace(/^[A-Z]+/, ""), 10);
+const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+function buildCells() {
+  const cells = new Map(), bad = [];
+  const put = (ref, c) => {
+    const r = String(ref).trim();
+    if (!REF.test(r)) { bad.push("“" + r + "” isn't a valid cell"); return; }
+    cells.set(r.toUpperCase(), c);
+  };
+  for (const f of fields) {
+    const a = A(f), b = B(f);
+    switch (f.type) {
+      case "text": if (f.cell && a.trim()) put(f.cell, { text: a.trim().toUpperCase() }); break;
+      case "number": if (f.cell) { const n = num(a); if (n != null) put(f.cell, { num: n }); } break;
+      case "time": if (f.cell) { const m = mins(a); if (m != null) put(f.cell, { num: m / 1440, time: true }); } break;
+      case "duration": if (f.cell) { const d = mins(a || "00:00") || 0; if (d > 0) put(f.cell, { num: d / 1440, time: true, dur: true, pad: true }); } break;
+      case "range":
+        if (f.cell) { const m = mins(a); if (m != null) put(f.cell, { num: m / 1440, time: true }); }
+        if (f.cell2) { const m = mins(b); if (m != null) put(f.cell2, { num: m / 1440, time: true }); }
+        break;
+      case "total":
+        if (f.cell) {
+          const v = total(f);
+          if (v != null) put(f.cell, isTimeTotal(f) ? { num: Math.round(v * 60) / 1440, time: true, dur: true, pad: true } : { num: Math.round(v * 100) / 100 });
+        }
+        break;
+      case "const":
+        if (f.cell) {
+          if (f.ctype === "number") { const n = num(f.value); if (n != null) put(f.cell, { num: n }); }
+          else if (f.ctype === "time") { const m = mins(f.value); if (m != null) put(f.cell, { num: m / 1440, time: true }); }
+          else if (f.ctype === "duration") { const m = mins(f.value); if (m) put(f.cell, { num: m / 1440, time: true, dur: true, pad: true }); }
+          else if (f.value && f.value.trim()) put(f.cell, { text: f.value.trim().toUpperCase() });
+        }
+        break;
+    }
+  }
+  return { cells, bad };
+}
+
+const enc = new TextEncoder();
+const CRC = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+function crc32(buf) { let c = 0xFFFFFFFF; for (let i = 0; i < buf.length; i++) c = CRC[(c ^ buf[i]) & 0xFF] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+function zip(files) {
+  const parts = [], central = []; let offset = 0;
+  const u16 = (v, n) => { v.setUint16(n.o, n.x, true); };
+  for (const f of files) {
+    const name = enc.encode(f.name), data = f.data, crc = crc32(data);
+    const lh = new DataView(new ArrayBuffer(30));
+    lh.setUint32(0, 0x04034b50, true); lh.setUint16(4, 20, true); lh.setUint16(6, 0x0800, true); lh.setUint16(8, 0, true);
+    lh.setUint16(10, 0, true); lh.setUint16(12, 33, true); lh.setUint32(14, crc, true);
+    lh.setUint32(18, data.length, true); lh.setUint32(22, data.length, true); lh.setUint16(26, name.length, true); lh.setUint16(28, 0, true);
+    parts.push(new Uint8Array(lh.buffer), name, data);
+    const ch = new DataView(new ArrayBuffer(46));
+    ch.setUint32(0, 0x02014b50, true); ch.setUint16(4, 20, true); ch.setUint16(6, 20, true); ch.setUint16(8, 0x0800, true);
+    ch.setUint16(10, 0, true); ch.setUint16(12, 0, true); ch.setUint16(14, 33, true); ch.setUint32(16, crc, true);
+    ch.setUint32(20, data.length, true); ch.setUint32(24, data.length, true); ch.setUint16(28, name.length, true);
+    ch.setUint32(42, offset, true);
+    central.push(new Uint8Array(ch.buffer), name);
+    offset += 30 + name.length + data.length;
+  }
+  const cdSize = central.reduce((s, p) => s + p.length, 0);
+  const end = new DataView(new ArrayBuffer(22));
+  end.setUint32(0, 0x06054b50, true); end.setUint16(8, files.length, true); end.setUint16(10, files.length, true);
+  end.setUint32(12, cdSize, true); end.setUint32(16, offset, true);
+  const all = [...parts, ...central, new Uint8Array(end.buffer)];
+  const out = new Uint8Array(all.reduce((s, p) => s + p.length, 0)); let o = 0;
+  all.forEach(p => { out.set(p, o); o += p.length; });
+  return out;
+}
+function buildXlsx(cells) {
+  const ns = "http://schemas.openxmlformats.org/spreadsheetml/2006/main";
+  const h = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+  const sorted = [...cells.entries()].sort((x, y) => rowOf(x[0]) - rowOf(y[0]) || colOf(x[0]) - colOf(y[0]));
+  const rows = new Map();
+  sorted.forEach(e => { const r = rowOf(e[0]); if (!rows.has(r)) rows.set(r, []); rows.get(r).push(e); });
+  let sb = h + '<worksheet xmlns="' + ns + '"><sheetData>';
+  rows.forEach((list, r) => {
+    sb += '<row r="' + r + '">';
+    list.forEach(([ref, c]) => {
+      if (c.text != null) sb += '<c r="' + ref + '" t="inlineStr"><is><t xml:space="preserve">' + esc(c.text) + "</t></is></c>";
+      else sb += '<c r="' + ref + '"' + (c.dur ? (c.pad ? ' s="3"' : ' s="2"') : c.time ? ' s="1"' : "") + "><v>" + c.num + "</v></c>";
+    });
+    sb += "</row>";
+  });
+  sb += "</sheetData></worksheet>";
+  const name = esc(SHEET_NAME.replace(/[\\\/?*\[\]:]/g, "").slice(0, 31) || "Sheet1");
+  const files = [
+    ["[Content_Types].xml", h + '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>'],
+    ["_rels/.rels", h + '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>'],
+    ["xl/workbook.xml", h + '<workbook xmlns="' + ns + '" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="' + name + '" sheetId="1" r:id="rId1"/></sheets></workbook>'],
+    ["xl/_rels/workbook.xml.rels", h + '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>'],
+    ["xl/styles.xml", h + '<styleSheet xmlns="' + ns + '"><numFmts count="2"><numFmt numFmtId="164" formatCode="[h]:mm"/><numFmt numFmtId="165" formatCode="[hh]:mm"/></numFmts><fonts count="1"><font><sz val="11"/><name val="Calibri"/></font></fonts><fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="4"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="20" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="164" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="165" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/></cellXfs></styleSheet>'],
+    ["xl/worksheets/sheet1.xml", sb]
+  ].map(([n, s]) => ({ name: n, data: enc.encode(s) }));
+  return zip(files);
+}
+window.__tk = { buildCells, buildXlsx };
+
+async function send() {
+  const { cells, bad } = buildCells();
+  if (bad.length) { toast(bad[0]); return; }
+  if (!cells.size) { toast("Nothing to export yet"); return; }
+  let file;
+  try {
+    file = new File([buildXlsx(cells)], FILE_NAME + ".xlsx", { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+  } catch (e) { toast("Couldn't create the file"); return; }
+  window.__lastFile = file;
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    try { await navigator.share({ files: [file], title: FILE_NAME }); }
+    catch (e) { if (e && e.name !== "AbortError") download(file); }
+  } else download(file);
+}
+function download(file) {
+  const url = URL.createObjectURL(file), a = el("a");
+  a.href = url; a.download = file.name; document.body.append(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+  toast("Saved " + file.name);
+}
+
+render();
+setInterval(refreshAll, 20000);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) refreshAll(); });
+window.addEventListener("resize", fitAll);
+window.addEventListener("orientationchange", () => setTimeout(fitAll, 200));
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
+</script>
+</body>
+</html>
