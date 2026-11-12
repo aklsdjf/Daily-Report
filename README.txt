@@ -1,4 +1,4 @@
-TK Report (web) 1.18
+TK Report (web) 1.1
 ====================
 Files: index.html, sw.js, manifest.webmanifest, icon-192.png, icon-512.png, apple-touch-icon.png
 Keep them all together in the same folder.
@@ -19,3 +19,4 @@ Notes
 - Data is stored on the phone only (localStorage). Clearing Safari website data erases it.
 - To update, upload the new files over the old ones; the app picks up changes when online.
 - Time links and the Setup screen are intentionally not included.
+- The sent spreadsheet has the same merged cells and row heights as your report sheet, so copy A1:R208 and paste at A1.
