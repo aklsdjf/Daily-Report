@@ -1,4 +1,4 @@
-TK Report (web) 1.3
+TK Report (web) 1.4
 ====================
 Files: index.html, sw.js, manifest.webmanifest, icon-192.png, icon-512.png, apple-touch-icon.png
 Keep them all together in the same folder.
